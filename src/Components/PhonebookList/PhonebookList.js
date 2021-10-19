@@ -1,16 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../redux/phoneBook/actions";
+import { deleteContact } from "../../redux/phoneBook/operations";
+import { getVisibleContacts } from "../../redux/phoneBook/selectors";
 import style from "./PhonebookList.module.css";
 
 export default function PhonebookList() {
-  const filter = useSelector(state => state.contacts.filter);
-  const contacts = useSelector(state => state.contacts.contacts);
-
-  const normalizedInput = filter.toLocaleLowerCase();
-  const filteredContacts = contacts.filter(contact => contact.name.toLocaleLowerCase().includes(normalizedInput));
-
   const dispatch = useDispatch();
-  const deleteBtnHandler = contact => dispatch(actions.delContact(contact));
+
+  const filteredContacts = useSelector(getVisibleContacts);
+
+  const deleteBtnHandler = contact => dispatch(deleteContact(contact.id));
 
   return (
     <>

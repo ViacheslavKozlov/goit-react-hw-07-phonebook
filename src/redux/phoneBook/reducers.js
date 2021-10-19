@@ -1,9 +1,11 @@
 import { combineReducers, createReducer } from "@reduxjs/toolkit";
-import { addContact, delContact, changeFilter } from "./actions";
+import { addContactSuccess, addContactError, getContactsSuccess, delContactSuccess, changeFilter } from "./actions";
 
 const contactsReducer = createReducer([], {
-  [addContact]: addContactFunc,
-  [delContact]: delContactFunc
+  [getContactsSuccess]: (_, { payload }) => payload,
+  [addContactSuccess]: (state, { payload }) => [...state, payload],
+  [addContactError]: addContactErrFunc,
+  [delContactSuccess]: delContactFunc
 });
 
 const filterReducer = createReducer("", {
@@ -15,16 +17,20 @@ const rootReducer = combineReducers({
   filter: filterReducer
 });
 
-function addContactFunc(state, { payload }) {
-  if (state.some(contact => contact.name.toLocaleLowerCase() === payload.name.toLocaleLowerCase())) {
-    alert(`${payload.name} is alredy exist`);
-    return state;
-  }
-  return [...state, payload];
+// function addContactFunc(state, { payload }) {
+//   if (state.some(contact => contact.name.toLocaleLowerCase() === payload.name.toLocaleLowerCase())) {
+//     alert(`${payload.name} is alredy exist`);
+//     return state;
+//   }
+//   return [...state, payload];
+// }
+
+function addContactErrFunc(_, { payload }) {
+  alert(payload);
 }
 
 function delContactFunc(state, { payload }) {
-  return state.filter(contact => contact.id !== payload.id);
+  return state.filter(contact => contact.id !== payload);
 }
 
 export default rootReducer;
