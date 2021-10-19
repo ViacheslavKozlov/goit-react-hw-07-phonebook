@@ -10,13 +10,12 @@ import {
   delContactSuccess,
   delContactError
 } from "./actions";
-import store from "../store";
 
 axios.defaults.baseURL = "http://localhost:3030";
 
 export const addContact = ({ name, number }) => (dispatch, getState) => {
   const contact = { name, number };
-  console.log(store);
+  // console.log(store);
 
   const contacts = getState().contacts.contacts;
 
